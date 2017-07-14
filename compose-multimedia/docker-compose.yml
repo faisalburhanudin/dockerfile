@@ -1,0 +1,18 @@
+version: '2'
+services: 
+  web:
+    build: ./web
+    ports: 
+      - "8000:8000"
+    command: bash -c 'python manage.py migrate && uwsgi --ini uwsgi.ini'
+    volumes: 
+      - /usr/src/app
+
+  nginx:
+    image: nginx:1
+    volumes_from: 
+      - web:ro
+    ports:
+      - "8080:8080"
+    depends_on: 
+      - web
