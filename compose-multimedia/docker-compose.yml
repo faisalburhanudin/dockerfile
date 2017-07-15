@@ -1,7 +1,10 @@
 version: '2'
 services: 
   web:
-    build: ./web
+    image: ./web
+    environment:
+      - DEBUG=0
+      - STATIC_URL=http://localhost:80/
     ports: 
       - "8000:8000"
     command: bash -c 'python manage.py migrate && uwsgi --ini uwsgi.ini'
@@ -10,9 +13,9 @@ services:
 
   nginx:
     image: nginx:1
-    volumes_from: 
-      - web:ro
+    volumes: 
+      - ./web/src/static:/usr/share/nginx/html
     ports:
-      - "8080:8080"
+      - "80:80"
     depends_on: 
       - web
