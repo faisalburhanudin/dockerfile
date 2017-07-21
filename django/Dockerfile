@@ -8,3 +8,5 @@ RUN pip install uwsgi
 
 COPY src/ .
 COPY uwsgi.ini .
+
+ENV DEBUG=0
