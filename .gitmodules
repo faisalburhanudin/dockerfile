@@ -1,0 +1,6 @@
+[submodule "celery/src"]
+	path = celery/src
+	url = git@github.com:faisalburhanudin/multimedia.git
+[submodule "django/src"]
+	path = django/src
+	url = git@github.com:faisalburhanudin/multimedia.git
