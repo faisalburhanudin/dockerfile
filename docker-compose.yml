@@ -12,6 +12,8 @@ services:
 
   celery:
     build: ./celery
+    environment: 
+      - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672//
 
   rabbitmq:
     build: ./rabbitmq
@@ -23,4 +25,4 @@ services:
     ports:
       - "80:80"
     depends_on: 
-      - web
+      - django
