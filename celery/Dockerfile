@@ -7,6 +7,6 @@ RUN pip install -r requirements.txt
 
 COPY src/ .
 
-ENV DEBUG=0
+ENV DEBUG=False
 
 CMD ["celery", "-A", "core.celery:app", "worker", "--loglevel=info"]

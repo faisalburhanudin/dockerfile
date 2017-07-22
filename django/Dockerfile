@@ -7,6 +7,8 @@ RUN pip install -r requirements.txt
 RUN pip install uwsgi
 
 COPY src/ .
-COPY uwsgi.ini .
 
-ENV DEBUG=0
+RUN bash -c "python manage.py migrate"
+
+COPY uwsgi.ini .
+CMD ["uwsgi", "--ini", "uwsgi.ini"]

@@ -6,7 +6,6 @@ services:
       - STATIC_URL=http://localhost:80/
     ports: 
       - "8000:8000"
-    command: bash -c 'python manage.py migrate && uwsgi --ini uwsgi.ini'
     depends_on: 
       - rabbitmq
 
@@ -21,7 +20,7 @@ services:
   nginx:
     build: ./nginx
     volumes: 
-      - ./web/src/static:/usr/share/nginx/html
+      - ./django/src/static:/usr/share/nginx/html
     ports:
       - "80:80"
     depends_on: 
