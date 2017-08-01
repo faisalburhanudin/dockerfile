@@ -4,15 +4,32 @@ services:
     build: ./django
     environment: 
       - STATIC_URL=http://localhost:80/
+      - MEDIA_URL=http://localhost:80/media/
+      - MYSQL_NAME=multimedia
+      - MYSQL_USER=multimedia
+      - MYSQL_PASS=multimedia
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+    command: bash -c 'python manage.py migrate && uwsgi --ini uwsgi.ini'
     ports: 
       - "8000:8000"
+    links: 
+      - mysql:mysql
     depends_on: 
       - rabbitmq
+      - mysql
+      - nginx
+    volumes: 
+      - ./media:/usr/src/app/media
 
   celery:
     build: ./celery
     environment: 
       - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672//
+    depends_on: 
+      - rabbitmq
+      - mysql
+      - nginx
 
   rabbitmq:
     build: ./rabbitmq
@@ -21,7 +38,14 @@ services:
     build: ./nginx
     volumes: 
       - ./django/src/static:/usr/share/nginx/html
+      - ./media:/usr/share/nginx/html/media
     ports:
       - "80:80"
-    depends_on: 
-      - django
+
+  mysql:
+    build: ./mysql
+    environment: 
+      - MYSQL_DATABASE=multimedia
+      - MYSQL_USER=multimedia
+      - MYSQL_PASSWORD=multimedia
+      - MYSQL_ROOT_PASSWORD=example
